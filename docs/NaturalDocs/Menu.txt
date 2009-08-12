@@ -1,0 +1,133 @@
+Format: 1.35
+
+
+# You can add a title and sub-title to your menu like this:
+# Title: [project name]
+# SubTitle: [subtitle]
+
+# You can add a footer to your documentation like this:
+# Footer: [text]
+# If you want to add a copyright notice, this would be the place to do it.
+
+
+# --------------------------------------------------------------------------
+# 
+# Cut and paste the lines below to change the order in which your files
+# appear on the menu.  Don't worry about adding or removing files, Natural
+# Docs will take care of that.
+# 
+# You can further organize the menu by grouping the entries.  Add a
+# "Group: [name] {" line to start a group, and add a "}" to end it.
+# 
+# You can add text and web links to the menu by adding "Text: [text]" and
+# "Link: [name] ([URL])" lines, respectively.
+# 
+# The formatting and comments are auto-generated, so don't worry about
+# neatness when editing the file.  Natural Docs will clean it up the next
+# time it is run.  When working with groups, just deal with the braces and
+# forget about the indentation and comments.
+# 
+# You can use this file on other computers even if they use different
+# directories.  As long as the command line points to the same source files,
+# Natural Docs will be able to correct the locations automatically.
+# 
+# --------------------------------------------------------------------------
+
+
+Group: Lib  {
+
+   File: Fusion  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\fusion.js)
+   File: Fusion.Error  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\Error.js)
+   File: Fusion.Lib.ApplicationDefinition  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\ApplicationDefinition.js)
+   File: Fusion.Lib.EventMgr  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\EventMgr.js)
+   File: Fusion.Lib.MGBroker  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\MGBroker.js)
+   File: Fusion.Tool.Button  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\ButtonTool.js)
+   File: Fusion.Tool.ButtonBase  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\ButtonBase.js)
+   File: Fusion.Tool.Canvas  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\CanvasTool.js)
+   File: Fusion.Tool.Click  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\ClickTool.js)
+   File: Fusion.Tool.MenuBase  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\MenuBase.js)
+   File: Fusion.Tool.Rectangle  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\RectTool.js)
+   File: Fusion.Tool.Search  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\Search.js)
+   File: Fusion.Widget  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\Widget.js)
+   File: Fusion.Widget.Map  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\Map.js)
+
+   Group: OpenLayers  {
+
+      Group: Lang  {
+
+         File: Lang["cs-CZ"]  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\OpenLayers\Lang\cs-CZ.js)
+         File: Lang["de"]  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\OpenLayers\Lang\de.js)
+         File: Lang["en"]  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\OpenLayers\Lang\en.js)
+         File: Lang["en-CA"]  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\OpenLayers\Lang\en-CA.js)
+         File: Lang["fr"]  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\OpenLayers\Lang\fr.js)
+         }  # Group: Lang
+
+      File: OpenLayers  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\OpenLayers\OpenLayers.js)
+      File: OpenLayers  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\lib\OpenLayers\OpenLayersUncompressed.js)
+      }  # Group: OpenLayers
+
+   }  # Group: Lib
+
+Group: Widgets  {
+
+   File: About  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\About.js)
+   File: ActivityIndicator  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ActivityIndicator.js)
+   File: Buffer  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Buffer.js)
+   File: BufferPanel  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\BufferPanel.js)
+   File: CenterSelection  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\CenterSelection.js)
+   File: ClearSelection  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ClearSelection.js)
+   File: ColorPicker  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ColorPicker.js)
+   File: CursorPosition  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\CursorPosition.js)
+   File: EditableScale  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\EditableScale.js)
+   File: ExtentHistory  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ExtentHistory.js)
+   File: Help  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Help.js)
+   File: InitialMapView  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\InitialMapView.js)
+   File: InvokeScript  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\InvokeScript.js)
+   File: InvokeURL  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\InvokeURL.js)
+   File: LayerManager  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\LayerManager.js)
+   File: Legend  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Legend.js)
+   File: LinkToView  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\LinkToView.js)
+   File: MapMenu  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\MapMenu.js)
+   File: Maptip  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Maptip.js)
+   File: Measure  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Measure.js)
+   File: Navigator  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Navigator.js)
+   File: OverviewMap  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\OverviewMap.js)
+   File: Pan  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Pan.js)
+   File: PanOnClick  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\PanOnClick.js)
+   File: PanQuery  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\PanQuery.js)
+   File: Print  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Print.js)
+   File: RefreshMap  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\RefreshMap.js)
+   File: SaveMap  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\SaveMap.js)
+   File: Scalebar  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Scalebar.js)
+   File: ScalebarDual  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ScalebarDual.js)
+   File: Search  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Search.js)
+   File: Select  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Select.js)
+   File: SelectionInfo  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\SelectionInfo.js)
+   File: SelectionPanel  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\SelectionPanel.js)
+   File: SelectPolygon  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\SelectPolygon.js)
+   File: SelectRadius  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\SelectRadius.js)
+   File: SelectRadiusValue  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\SelectRadiusValue.js)
+   File: SelectWithin  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\SelectWithin.js)
+   File: TaskPane  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\TaskPane.js)
+   File: ViewOptions  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ViewOptions.js)
+   File: ViewSize  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ViewSize.js)
+   File: Zoom  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\Zoom.js)
+   File: ZoomOnClick  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ZoomOnClick.js)
+   File: ZoomToSelection  (C:\Documents and Settings\Mike\My Documents\devtree\osgeo\fusion\tags\fusion-1.1.0\build\widgets\ZoomToSelection.js)
+   }  # Group: Widgets
+
+Group: Index  {
+
+   Index: Everything
+   Class Index: Classes
+   Constant Index: Constants
+   File Index: Files
+   Function Index: Functions
+   Property Index: Properties
+   }  # Group: Index
+
+
+
+##### Do not change or remove these lines. #####
+Data: 1(D3330wbBu9NEG\t6Xp\fXrGtt8\`6bP8AGbPQXBu9NEG\t6bfG/tHGGbu6`GubcN68u\btp`6bcN68u\zDMDM2bYN8ofbo8Y)
+Data: 1(h3330wbBu9NEG\t6Xp\fXrGtt8\`6bP8AGbPQXBu9NEG\t6bfG/tHGGbu6`GubcN68u\btp`6bcN68u\zDMDM2bYN8ofb78f`Gt6)

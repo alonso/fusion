@@ -1,0 +1,11 @@
+<div class="DrawAndSavePolygonForm">
+  <fieldset class="DrawAndSavePolygonOptions">
+	  <legend>Guardar Polígono</legend>
+	  	<label class="block" for="dialogDrawAndSavePolygonKml"><input name="dialogDrawAndSavePolygonKml" id="dialogDrawAndSavePolygonKml" type="checkbox" value="kml" checked>
+			kml</label>
+		<label class="block" for="dialogDrawAndSavePolygonGml"><input name="dialogDrawAndSavePolygonGml" id="dialogDrawAndSavePolygonGml" type="checkbox" value="gml" checked>
+			gml</label>
+		<label class="block" for="dialogDrawAndSavePolygonShp"><input name="dialogDrawAndSavePolygonShp" id="dialogDrawAndSavePolygonShp" type="checkbox" value="shp" checked>
+			shp</label>
+  </fieldset>
+</div>

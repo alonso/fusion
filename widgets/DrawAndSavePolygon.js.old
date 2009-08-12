@@ -1,0 +1,419 @@
+/**
+ * Fusion.Widget.DrawAndSavePolygon
+ *
+ * $Id: SelectPolygon.js 1462 2008-08-21 13:57:06Z madair $
+ *
+ * Copyright (c) 2007, DM Solutions Group Inc.
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+ /********************************************************************
+ * Class: Fusion.Widget.FooWidget
+ *
+ * My first from zero custom widget
+ * 
+ * **********************************************************************/
+
+
+Fusion.Widget.DrawAndSavePolygon = OpenLayers.Class(Fusion.Widget, Fusion.Tool.Canvas,
+{
+	/**
+	 * Árbol con poligonios
+	 */
+	oTree: null,
+
+    drawPolygon: null,
+    
+    savePolygons: null,
+    
+    selectionType: 'INTERSECTS',
+    
+    nTolerance : 3, //default pixel tolernace for a point click
+    
+    nPolygons: 0,
+    
+    currentPolygon: null,
+    
+    polyItem: null,
+    
+    polygonFinished: true,
+
+    initialize : function(widgetTag) {
+        //console.log('Select.initialize');
+
+        Fusion.Widget.prototype.initialize.apply(this, [widgetTag, true]);
+        Fusion.Tool.Canvas.prototype.initialize.apply(this, []);
+        
+        this.asCursor = ['auto'];
+        
+        this.nPolygons = 0;
+        this.polygon = null;
+
+        /* Not forget to manage the xml file.
+         * var json = widgetTag.extension;
+         */
+        this.drawPolygon = new Jx.Button(
+        		this.buttonAction = new Jx.Action(OpenLayers.Function.bind(this.activateDrawPoligon, this)),
+        		{id: 'drawPolygonButton',
+        	     imgPath: 'images/icons/draw_polygon_button.png'}
+        		);
+        this.drawLine = new Jx.Button(
+        		this.buttonAction = new Jx.Action(OpenLayers.Function.bind(this.activateDrawPoligon, this)),
+        		{id: 'drawLineButton',
+        	     imgPath: 'images/icons/draw_line_button.png'}
+        		);
+        this.drawPoint = new Jx.Button(
+        		this.buttonAction = new Jx.Action(OpenLayers.Function.bind(this.activateDrawPoligon, this)),
+        		{id: 'drawPointButton',
+        	     imgPath: 'images/icons/draw_point_button.png'}
+        		);
+        this.savePolygons = new Jx.Button(
+        		new Jx.Action(OpenLayers.Function.bind(this.openSaveDialog, this)),
+        		{id: 'savePolygonButton',
+        		 imgPath: 'images/icons/file-save.png'}
+        		);
+        var splitV = new Jx.Splitter(
+        		this.domObj,
+        		{layout: 'vertical',
+                 containerOptions: [{height: 28}]
+                });
+        this.tBar = new Jx.Toolbar(splitV.elements[0]);
+        this.tBar.add(this.drawPolygon,
+        		      this.drawLine,
+        		      this.drawPoint,
+        		      this.savePolygons);
+        
+        this.oTree =new Jx.Tree(splitV.elements[1]);
+        this.tFolder = new Jx.TreeFolder({label: 'Mis Polígonos'});
+        this.oTree.append(this.tFolder);
+        this.tFolder.checkBox = document.createElement('input');
+        this.tFolder.checkBox.type = 'checkbox';
+        this.tFolder.domObj.insertBefore(this.tFolder.checkBox, this.tFolder.domObj.childNodes[1]);
+        this.tFolder.expand();
+        
+        this.dialogContentURL = Fusion.getFusionURL() + widgetTag.location + 'DrawAndSavePolygon/DrawAndSavePolygon.html';
+        this.savedFolder = '';
+        Fusion.addWidgetStyleSheet(widgetTag.location + 'DrawAndSavePolygon/DrawAndSavePolygon.css');
+        
+    },
+    
+    activate : function(){},
+    
+    deactivate : function(){
+    	this.deactivateCanvas();
+        this.getMap().setCursor('auto');
+    },
+
+    activateDrawPoligon: function() {
+    	if(!this.polygonFinished)
+    		return;
+    	this.activateCanvas();
+        this.getMap().setCursor(this.asCursor);
+        this.polygonFinished = false;
+        this.polyItem = new Jx.TreeItem({label: 'polygon '+this.nPolygons++});
+        this.currentPolygon = new Fusion.Tool.Canvas.Polygon(this.getMap());
+        this.polyItem.polygon = this.currentPolygon;
+        this.polyItem.checkBox = document.createElement('input');
+        this.polyItem.checkBox.type = 'checkbox';
+        Event.observe(this.polyItem.checkBox, 
+        		      'click',
+        		      OpenLayers.Function.bind(this.drawChecked, this));
+        this.polyItem.checkBox.checked = true;
+        this.polyItem.domObj.insertBefore(this.polyItem.checkBox, 
+        		                          this.polyItem.domObj.childNodes[1]);
+        this.tFolder.append(this.polyItem);
+        this.drawChecked();
+        
+    },
+    
+    /**
+     * (public) mouseDown(e)
+     *
+     * handle the mouse down event
+     *
+     * @param e Event the event that happened on the mapObj
+     */
+    mouseDown: function(e) {
+        //console.log('SelectRadius.mouseDown');
+    	if(this.polygonFinished)
+    		return;
+        if (Event.isLeftClick(e)) {
+            var p = this.getMap().getEventPosition(e);
+            
+            if (!this.isDigitizing) {
+                var point = this.getMap().pixToGeo(p.x, p.y);
+//                var proj = new OpenLayers.Projection("EPSG:4326");
+//                var lonLat = new OpenLayers.LonLat(point.x, point.y);
+//                var mercPoint = lonLat.transform(proj, this.oMap.oMapOL.getProjectionObject());
+//                alert("projection = "+this.oMap.oMapOL.projection+" x = "+lonLat.lon+" y = "+lonLat.lat+
+//                		" merc x = "+mercPoint.lon+" merc y = "+mercPoint.lat);
+                var from = new Fusion.Tool.Canvas.Node(point.x,point.y, this.getMap());
+                var to = new Fusion.Tool.Canvas.Node(point.x,point.y, this.getMap());
+                var seg = new Fusion.Tool.Canvas.Segment(from,to);
+                seg.setEditing(true);
+                this.currentPolygon.addSegment(seg);
+                this.drawChecked();
+                this.isDigitizing = true;
+            } else {
+                var seg = this.currentPolygon.lastSegment();
+                seg.setEditing(false);
+                seg = this.currentPolygon.extendLine();
+                seg.setEditing(true);
+                this.drawChecked();
+            }
+        }
+    },
+
+    /**
+     * (public) mouseMove(e)
+     *
+     * handle the mouse move event
+     *
+     * @param e Event the event that happened on the mapObj
+     */
+    mouseMove: function(e) {
+        //console.log('SelectRadius.mouseMove');
+        if (!this.isDigitizing || this.polygonFinished) {
+            return;
+        }
+        var p = this.getMap().getEventPosition(e);
+        var seg = this.currentPolygon.lastSegment();
+        seg.to.setPx(p.x,p.y);
+        seg.to.updateGeo();
+        this.drawChecked();
+    },
+    
+    /**
+     * (public) dblClick(e)
+     *
+     * handle the mouse dblclick event
+     *
+     * @param e Event the event that happened on the mapObj
+     */
+    dblClick: function(e) {
+        //console.log('Digitizer.dblClick');
+        if (!this.isDigitizing || this.polygonFinished) {
+            return;
+        }
+        this.dblClk = true;
+        this.event = e;
+        var p = this.getMap().getEventPosition(e);
+        var point = this.getMap().pixToGeo(p.x, p.y);
+        var seg = this.currentPolygon.lastSegment();
+        seg.setEditing(false);
+        seg.to.set(point.x,point.y);
+        this.drawChecked();
+        this.isDigitizing = false;
+        this.polygonFinished = true;
+        this.getMap().setCursor('auto');
+    },
+    
+    openSaveDialog: function() {
+        if (!this.dialog) {
+            var size = Element.getPageDimensions();
+            var o = {
+                title: OpenLayers.i18n('Guardar Polígono'),
+                id: 'drawAndSavePolygon',
+                contentURL : this.dialogContentURL,
+                onContentLoaded: OpenLayers.Function.bind(this.contentLoaded, this),
+                imageBaseUrl: null,
+                width: 250,
+                height: 170,
+                modal: true,
+                resizeable: false,
+                top: (size.height-170)/2,
+                left: (size.width-250)/2,
+                buttons: ['Guardar', 'Cancelar'],
+                handler: OpenLayers.Function.bind(this.handler, this)
+            };
+            this.dialog = new Jx.Dialog(o);
+            
+        }
+        this.dialog.open();
+    },
+    
+    contentLoaded: function(dialog) {
+        dialog.registerIds(['dialogDrawAndSavePolygonKml', 
+                            'dialogDrawAndSavePolygonGml',
+                            'dialogDrawAndSavePolygonShp'],
+                            dialog.content);
+        dialog.getObj('dialogDrawAndSavePolygonKml').checked = 'false';
+        dialog.getObj('dialogDrawAndSavePolygonGml').checked = 'false';
+        dialog.getObj('dialogDrawAndSavePolygonShp').checked = 'false';
+
+    },
+    
+    handler: function(button) {
+        if (button == 'Guardar') {
+            this.kml = this.dialog.getObj('dialogDrawAndSavePolygonKml').checked;
+            this.gml = this.dialog.getObj('dialogDrawAndSavePolygonGml').checked;
+            this.shp = this.dialog.getObj('dialogDrawAndSavePolygonShp').checked;
+            this.save();
+            
+        }
+        this.dialog.close();
+    },
+
+    /**
+     *  
+     **/
+    save : function() {
+    	var jsonPoly = this.polygonsToJson();
+    	var jsonFormats = this.getFormatsJson();
+    	var options = {
+    			parameters: {
+    		      'locale': Fusion.locale,
+    		      'mapfile': this.oMap.aMaps[0].sMapFile,
+    		      'ROIRENDERER': jsonPoly,
+    		      'formats': jsonFormats
+    	        },
+                'onComplete': function(r){
+    	        	var o;
+    	        	alert(r.responseText)
+    	        	eval("o="+r.responseText);
+    	        	window.open(o.value ,'Bajar archivo','');
+    	        }
+            };        
+    	var aMaps = this.getMap().getAllMaps();
+        var saveScript = aMaps[0].arch + '/' + Fusion.getScriptLanguage() + "/Save." + Fusion.getScriptLanguage();
+        Fusion.ajaxRequest(saveScript, options);
+    },
+    
+    selectedPolygons: function (type){
+    	var polygonToString = OpenLayers.Function.bind(this.polygonToString, this);
+    	var fun = function(value, node){
+    		return polygonToString(node.polygon, type);
+        }
+        var filter = function(node){
+        	return node.checkBox.checked;
+        }
+        return this.fold(fun, filter);
+    },
+    
+    polygonsToJson: function(){
+    	var fun = function(last){
+    		return 1+last;
+    	}
+    	var filter = function(node){
+        	return node.checkBox.checked;
+        }
+    	var nChecked = this.fold(fun, filter, 0);
+    	var i = 0;
+    	var polygonToJson = OpenLayers.Function.bind(this.polygonToJson, this);
+    	fun = function(last, node){
+    		var json = (i==0?'{"':'"')+i+'": {'+
+                         '"type": "polygon", '+
+                         '"aGeoCoords": '+polygonToJson(node.polygon)+', '+
+    		             '"label": "mi poligono'+i+'"} '+
+    		            (i==nChecked-1?'}':', ');
+        	i++;
+        	return last+json;
+        }
+        return this.fold(fun, filter, '');
+    },
+    
+    polygonToJson: function(polygon){
+    	var json = '{';
+    	var nodes = polygon.getNodes();
+    	// Como un dblClick => 2 mouseDown los últimos 2 puntos son redundantes
+    	for (var i=0; i<nodes.length-3; i++)
+    		json += '"'+(2*i)+'": '+nodes[i].x+', '+
+    		        '"'+(2*i+1)+'": '+nodes[i].y+', ';
+    	json += '"'+(2*(nodes.length-3))+'": '+nodes[nodes.length-1].x+', '+
+    	        '"'+(2*(nodes.length-3)+1)+'": '+nodes[nodes.length-1].y+'}';
+    	return json;
+    },
+    
+    polygonToString : function(polygon, type){
+    	if(type == 'kml'){
+    		var kml = '<Placemark><name>polygon</name>'+
+                      '<description></description>'+
+                      '<styleUrl>#linecolour</styleUrl>'+
+                      '<LineString>'+
+                      '<tessellate>1</tessellate><altitudeMode>clampToGround</altitudeMode>'+
+                      '<coordinates>';
+    		var nodes = polygon.getNodes();
+    		for (var i=0; i<nodes.length; i++) {
+    			kml += nodes[i].x+', '+nodes[i].y+', 0 ';
+    		}
+    		kml += nodes[0].x+', '+nodes[0].y+', 0';
+    		kml += '</coordinates></LineString></Placemark>';
+    		return kml;
+    	}
+    	if(type == 'gml'){
+    		return '';
+    	}
+    	if(type == 'shp'){
+    		var shp = '';
+    		var nodes = polygon.getNodes();
+    		for (var i=0; i<nodes.length; i++) {
+    			kml += nodes[i].x+' '+nodes[i].y;
+    		}
+    		kml += nodes[0].x+' '+nodes[0].y+' 0';
+    		return shp;
+    	}
+    },
+    
+    setParameter : function(param, value) {
+        if (param == "Tolerance" && value > 0) {
+            this.nTolerance = value;
+        }
+        if (param == 'SelectionType') {
+            this.selectionType = value;
+        }
+    },
+    
+    /**
+     * (protected) fold(fun, filter, init)
+     *
+     * La típica fold de programación funcional que se aplica sobre 
+     * el "árbol" this.tFolder
+     * @param fun Function Función que se aplicará a cada nodo
+     * @param filter Function Función para discriminar si el nodo será considerado
+     * @param init Object valor inicial
+     * @return Object 
+     */
+    fold: function(fun, filter, init){
+    	var ans = init;
+    	for(var i = 0; i<this.tFolder.nodes.length; i++)
+    		if(filter(this.tFolder.nodes[i]))
+    			ans = fun(ans, this.tFolder.nodes[i]); // Si this.tFolder.nodes[i] no fuese hojas habría que aplicar fold recursivamente sobr él
+    	return ans;
+    },
+    
+    drawChecked: function(){
+    	this.clearContext();
+    	var context = this.context;
+    	var fun = function(last, node){
+        	node.polygon.draw(context);
+        }
+        var filter = function(node){
+        	return node.checkBox.checked;
+        }
+        this.fold(fun, filter);
+    },
+    
+    getFormatsJson: function(){
+    	var json = '{"kml": '+this.kml+', '+
+    	            '"gml": '+this.gml+', '+
+    	            '"shp": '+this.shp+
+    	           '}';
+    	return json;
+    }
+});

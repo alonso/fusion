@@ -1,0 +1,17 @@
+.DrawAndSavePolygonForm {
+    padding: 5px;
+}
+.DrawAndSavePolygonForm select, .DrawAndSavePolygonForm {
+  width: 200px;
+}
+
+.DrawAndSavePolygonForm .block {
+  display: block;
+	float: none;
+}
+
+.DrawAndSavePolygonForm label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 20px;
+}
