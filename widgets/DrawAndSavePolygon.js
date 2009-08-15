@@ -171,6 +171,7 @@ Fusion.Widget.DrawAndSavePolygon = OpenLayers.Class(Fusion.Widget, Fusion.Tool.C
         		                           this.shapeItem.domObj.childNodes[1]);
         this.tFolder.append(this.shapeItem);
         this.isDigitizing = false;
+        this.nShapes++;
         this.drawChecked();
         
     },
@@ -204,6 +205,7 @@ Fusion.Widget.DrawAndSavePolygon = OpenLayers.Class(Fusion.Widget, Fusion.Tool.C
         		                           this.shapeItem.domObj.childNodes[1]);
         this.tFolder.append(this.shapeItem);
         this.isDigitizing = false;
+        this.nShapes++;
         this.drawChecked();
         
     },
@@ -237,6 +239,7 @@ Fusion.Widget.DrawAndSavePolygon = OpenLayers.Class(Fusion.Widget, Fusion.Tool.C
         		                           this.shapeItem.domObj.childNodes[1]);
         this.tFolder.append(this.shapeItem);
         this.isDigitizing = false;
+        this.nShapes++;
         this.drawChecked();
         
     },
